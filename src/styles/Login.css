@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --glass-bg:     rgba(255, 255, 255, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  --accent:       #4f8ef7;
+  --accent-glow:  rgba(79, 142, 247, 0.35);
+  --text-primary: #ffffff;
+  --text-muted:   rgba(255, 255, 255, 0.75);
+  --input-bg:     rgba(255, 255, 255, 0.18);
+  --input-border: rgba(255, 255, 255, 0.28);
+  --input-focus:  rgba(79, 142, 247, 0.50);
+  --radius-input: 10px;
+}
+
+/* ─── WRAPPER ─────────────────────────────────────────── */
+
+.login-container {
+  background-image: url("../assets/finance-bg1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.login-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(8, 18, 50, 0.09),
+    rgba(8, 18, 50, 0.09)
+  );
+  z-index: 0;
+}
+
+.login-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── AUTH CARD ───────────────────────────────────────── */
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+  transition: 0.35s;
+}
+
+.auth-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.55);
+}
+
+/* ─── HEADER TEXT ─────────────────────────────────────── */
+
+.auth-card h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.2rem;
+  background: linear-gradient(90deg, #fff 30%, #a8c8ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.20);
+  margin: 1rem 0;
+}
+
+.auth-card h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ─── UTILITIES ───────────────────────────────────────── */
+
+.text-center { text-align: center; }
+.mb-4 { margin-bottom: 1.25rem; }
+.mb-3 { margin-bottom: 0.85rem; }
+.mb-2 { margin-bottom: 0.6rem; }
+.mt-4 { margin-top: 1.25rem; }
+.mt-5 { margin-top: 1.5rem; }
+.d-block { display: block; }
+.w-100 { width: 100%; }
+
+/* ─── FORM CONTROLS ───────────────────────────────────── */
+
+.form-control {
+  width: 100%;
+  padding: 0.72rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--input-focus);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ─── INPUT GROUP ─────────────────────────────────────── */
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+  background: var(--input-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--input-focus);
+}
+
+.input-group .form-control {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  flex: 1;
+}
+
+.input-group .form-control:focus {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--input-border);
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.btn-outline-secondary:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── REMEMBER ME ─────────────────────────────────────── */
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-check-input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.form-check-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+
+/* ─── BUTTON PRIMARY ──────────────────────────────────── */
+
+.btn-primary {
+  width: 100%;
+  padding: 0.72rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px var(--accent-glow);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ─── LINKS ───────────────────────────────────────────── */
+
+.auth-card .text-center a {
+  color: #7eb8ff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.auth-card .text-center a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.auth-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ─── FOOTER (inside card) ────────────────────────────── */
+
+.auth-card small {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+  display: block;
+  line-height: 1.7;
+}
+
+.auth-card small strong {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* ─── FOOTER (outside card) ───────────────────────────── */
+
+.auth-footer {
+  margin-top: 25px;
+  text-align: center;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.auth-footer small {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+  display: block;
+  line-height: 1.7;
+}
+
+.auth-footer strong {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* ─── MOBILE ──────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem 1rem;
+    justify-content: flex-start;
+    padding-top: 2.5rem;
+  }
+
+  .auth-card {
+    padding: 2rem 1.4rem;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .auth-card h1 {
+    font-size: 1.6rem;
+  }
+
+  .auth-card h3 {
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    font-size: 0.9rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .auth-footer {
+    margin-top: 18px;
+  }
+}
