@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://expense-tracker-backend-production-7524.up.railway.app/api/expenses";
+const API_URL = "https://expense-tracker-backend-production-7524.up.railway.app/api/expenses";
 
 const getAuthHeader = () => ({
     headers: {

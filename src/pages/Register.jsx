@@ -20,10 +20,27 @@ function Register() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setFormData({
             ...formData,
             [name]: value
         });
+
+        if (name === "password") {
+            if (value.length === 0) {
+                setStrength("");
+            } else if (value.length < 6) {
+                setStrength("Weak 🔴");
+            } else if (
+                value.length < 10 ||
+                !/[A-Z]/.test(value) ||
+                !/[0-9]/.test(value)
+            ) {
+                setStrength("Medium 🟡");
+            } else {
+                setStrength("Strong 🟢");
+            }
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -34,7 +51,7 @@ function Register() {
 
             await registerUser(formData);
 
-            toast.success("Registration Successful");
+            toast.success("Registration Successful 🎉");
 
             navigate("/");
 
@@ -122,7 +139,7 @@ function Register() {
 
                     {strength && (
                         <small className="d-block mb-3">
-                            Password Strength : {strength}
+                            Password Strength: {strength}
                         </small>
                     )}
 
