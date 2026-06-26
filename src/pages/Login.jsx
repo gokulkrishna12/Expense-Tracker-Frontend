@@ -4,124 +4,93 @@ import toast from "react-hot-toast";
 import { loginUser } from "../services/authService";
 import "../styles/Login.css";
 
-
 function Login() {
 
     const navigate = useNavigate();
 
-    const [loading, setLoading] =
-        useState(false);
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [errors, setErrors] = useState({});
 
-    const [showPassword, setShowPassword] =
-        useState(false);
-
-    const [rememberMe, setRememberMe] =
-        useState(false);
-
-    const [email, setEmail] =
-        useState("");
-
-    const [password, setPassword] =
-        useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     useEffect(() => {
-
-        const savedEmail =
-            localStorage.getItem(
-                "rememberEmail"
-            );
-
+        const savedEmail = localStorage.getItem("rememberEmail");
         if (savedEmail) {
-
             setEmail(savedEmail);
-
             setRememberMe(true);
         }
-
     }, []);
 
-    const handleLogin = async (e) => {
+    const validate = () => {
+        const newErrors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        e.preventDefault();
-
-        if (!email || !password) {
-
-            toast.error(
-                "Please fill all fields."
-            );
-
-            return;
+        if (!email.trim()) {
+            newErrors.email = "Email is required.";
+        } else if (!emailRegex.test(email)) {
+            newErrors.email = "Enter a valid email address.";
         }
 
-        const emailRegex =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!password) {
+            newErrors.password = "Password is required.";
+        } else if (password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters.";
+        }
 
-        if (
-            !emailRegex.test(email)
-        ) {
+        return newErrors;
+    };
 
-            toast.error(
-                "Please enter a valid email."
-            );
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
             return;
         }
 
         try {
-
             setLoading(true);
 
-            const response =
-                await loginUser({
+            const response = await loginUser({
+                email: email.trim(),
+                password
+            });
 
-                    email:
-                        email.trim(),
-
-                    password
-
-                });
-
-            localStorage.setItem(
-                "token",
-                response.data.token
-            );
+            localStorage.setItem("token", response.data.token);
 
             if (rememberMe) {
-
-                localStorage.setItem(
-                    "rememberEmail",
-                    email
-                );
-
+                localStorage.setItem("rememberEmail", email);
             } else {
-
-                localStorage.removeItem(
-                    "rememberEmail"
-                );
+                localStorage.removeItem("rememberEmail");
             }
 
-            toast.success(
-                "Welcome Back "
-            );
+            toast.success("Welcome Back 🎉");
 
             setTimeout(() => {
-
                 navigate("/dashboard");
-
             }, 1200);
 
         } catch (error) {
 
-            toast.error(
-                "Invalid Email or Password."
-            );
+            const status = error?.response?.status;
+            if (status === 401 || status === 403) {
+                toast.error("Invalid Email or Password.");
+            } else if (status === 404) {
+                toast.error("Account not found. Please register.");
+            } else {
+                toast.error("Login failed. Please try again.");
+            }
 
         } finally {
-
             setLoading(false);
         }
     };
-        return (
+
+    return (
 
         <div className="login-container">
 
@@ -129,155 +98,115 @@ function Login() {
 
                 <div className="text-center mb-4">
 
-                <h1 className="fw-bold">
+                    <h1>
+                        Expense Tracker
+                    </h1>
 
-                Expense Tracker
+                    <p className="app-subtitle">
+                        Smart Expense Management
+                    </p>
 
-                </h1>
+                    <hr />
 
-               <p className="text-muted">
+                    <h3>Welcome Back</h3>
 
-               Smart Expense Management
+                    <p className="text-muted">
+                        Please login to continue
+                    </p>
 
-               </p>
-
-               <hr />
-
-               <h3>
-
-               Welcome Back 
-
-              </h3>
-
-              <p className="text-muted">
-
-              Please login to continue
-
-             </p>
-
-            </div>
+                </div>
 
                 <form onSubmit={handleLogin}>
 
                     <input
                         type="email"
-                        className="form-control mb-3"
+                        className="form-control mb-1"
                         placeholder="Email"
                         value={email}
-                        onChange={(e) =>
-                            setEmail(e.target.value)
-                        }
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                            setErrors((prev) => ({ ...prev, email: "" }));
+                        }}
                     />
+                    {errors.email && (
+                        <small className="error-msg mb-2">
+                            {errors.email}
+                        </small>
+                    )}
 
-                    <div className="input-group mb-3">
-
+                    <div className="input-group mb-1 mt-2">
                         <input
-                            type={
-                                showPassword
-                                    ? "text"
-                                    : "password"
-                            }
+                            type={showPassword ? "text" : "password"}
                             className="form-control"
                             placeholder="Password"
                             value={password}
-                            onChange={(e) =>
-                                setPassword(e.target.value)
-                            }
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setErrors((prev) => ({ ...prev, password: "" }));
+                            }}
                         />
-
                         <button
                             type="button"
                             className="btn btn-outline-secondary"
-                            onClick={() =>
-                                setShowPassword(
-                                    !showPassword
-                                )
-                            }
+                            onClick={() => setShowPassword(!showPassword)}
                         >
-
-                            <i
-                                className={
-                                    showPassword
-                                        ? "bi bi-eye-slash-fill"
-                                        : "bi bi-eye-fill"
-                                }
-                            ></i>
-
+                            <i className={
+                                showPassword
+                                    ? "bi bi-eye-slash-fill"
+                                    : "bi bi-eye-fill"
+                            }></i>
                         </button>
-
                     </div>
+                    {errors.password && (
+                        <small className="error-msg mb-2">
+                            {errors.password}
+                        </small>
+                    )}
 
-                    <div className="form-check mb-3">
-
+                    <div className="form-check mb-3 mt-2">
                         <input
                             type="checkbox"
                             className="form-check-input"
                             id="rememberMe"
                             checked={rememberMe}
-                            onChange={(e) =>
-                                setRememberMe(
-                                    e.target.checked
-                                )
-                            }
+                            onChange={(e) => setRememberMe(e.target.checked)}
                         />
-
                         <label
                             className="form-check-label"
                             htmlFor="rememberMe"
                         >
                             Remember me
                         </label>
-
                     </div>
 
                     <button
                         className="btn btn-primary w-100"
                         disabled={loading}
                     >
-
-                        {
-                            loading
-                                ? "Signing In..."
-                                : "Login"
-                        }
-
+                        {loading ? "Signing In..." : "Login"}
                     </button>
-                    <div className="text-center mt-5">
-
-    <hr />
-
-
-
-</div>
 
                 </form>
-                    
 
                 <p className="mt-4 text-center">
-
-    Don't have an account?
-
-    <br />
-
-    <Link to="/register">
-
-        Create Account
-
-    </Link>
-
-</p>
+                    Don't have an account?
+                    <br />
+                    <Link to="/register">
+                        Create Account
+                    </Link>
+                </p>
 
             </div>
+
             <div className="auth-footer">
-    <small>
-        Developed by
-        <strong> Gokul Krishna</strong>
-    </small>
-    <br />
-    <small>
-        © {new Date().getFullYear()} All Rights Reserved
-    </small>
-</div>
+                <small>
+                    Developed by <strong>Gokul Krishna</strong>
+                </small>
+                <br />
+                <small>
+                    © {new Date().getFullYear()} All Rights Reserved
+                </small>
+            </div>
 
         </div>
 

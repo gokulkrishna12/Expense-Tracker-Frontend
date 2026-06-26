@@ -11,6 +11,7 @@ function Register() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [strength, setStrength] = useState("");
+    const [errors, setErrors] = useState({});
 
     const [formData, setFormData] = useState({
         name: "",
@@ -21,11 +22,12 @@ function Register() {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData({ ...formData, [name]: value });
 
+        // clear error on change
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+
+        // password strength
         if (name === "password") {
             if (value.length === 0) {
                 setStrength("");
@@ -43,8 +45,39 @@ function Register() {
         }
     };
 
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.name.trim()) {
+            newErrors.name = "Name is required.";
+        } else if (formData.name.trim().length < 3) {
+            newErrors.name = "Name must be at least 3 characters.";
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required.";
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = "Enter a valid email address.";
+        }
+
+        if (!formData.password) {
+            newErrors.password = "Password is required.";
+        } else if (formData.password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters.";
+        }
+
+        return newErrors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
         try {
             setLoading(true);
@@ -57,7 +90,8 @@ function Register() {
 
         } catch (error) {
 
-            toast.error("Registration Failed");
+            const msg = error?.response?.data?.message || "Registration Failed. Try again.";
+            toast.error(msg);
 
         } finally {
 
@@ -98,22 +132,31 @@ function Register() {
                         type="text"
                         name="name"
                         placeholder="Full Name"
-                        className="form-control mb-3"
+                        className="form-control mb-1"
                         value={formData.name}
                         onChange={handleChange}
                     />
+                    {errors.name && (
+                        <small className="error-msg mb-2">
+                            {errors.name}
+                        </small>
+                    )}
 
                     <input
                         type="email"
                         name="email"
                         placeholder="Email Address"
-                        className="form-control mb-3"
+                        className="form-control mb-1 mt-2"
                         value={formData.email}
                         onChange={handleChange}
                     />
+                    {errors.email && (
+                        <small className="error-msg mb-2">
+                            {errors.email}
+                        </small>
+                    )}
 
-                    <div className="input-group mb-2">
-
+                    <div className="input-group mb-1 mt-2">
                         <input
                             type={showPassword ? "text" : "password"}
                             name="password"
@@ -122,7 +165,6 @@ function Register() {
                             value={formData.password}
                             onChange={handleChange}
                         />
-
                         <button
                             type="button"
                             className="btn btn-outline-secondary"
@@ -134,17 +176,22 @@ function Register() {
                                 : "bi bi-eye-fill"
                             }></i>
                         </button>
-
                     </div>
 
+                    {errors.password && (
+                        <small className="error-msg mb-1">
+                            {errors.password}
+                        </small>
+                    )}
+
                     {strength && (
-                        <small className="d-block mb-3">
+                        <small className="d-block mb-3 mt-1">
                             Password Strength: {strength}
                         </small>
                     )}
 
                     <button
-                        className="btn btn-primary w-100"
+                        className="btn btn-primary w-100 mt-2"
                         disabled={loading}
                     >
                         {loading ? "Creating Account..." : "Register"}

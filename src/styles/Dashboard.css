@@ -537,6 +537,14 @@ input[type="date"].form-control { color-scheme: dark; }
 .light-theme .dash-footer p,
 .light-theme .dash-footer small { color: rgba(15, 28, 63, 0.70); }
 
+.error-msg {
+  display: block;
+  color: #fca5a5;
+  font-size: 0.76rem;
+  padding-left: 0.25rem;
+  margin-bottom: 0.4rem;
+}
+
 /* ─── RESPONSIVE ──────────────────────────────────────── */
 
 @media (max-width: 768px) {

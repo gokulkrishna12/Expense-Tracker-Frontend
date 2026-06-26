@@ -315,6 +315,13 @@
   color: #ffffff !important;
   font-weight: 600;
 }
+.error-msg {
+  display: block;
+  color: #fca5a5;
+  font-size: 0.76rem;
+  padding-left: 0.25rem;
+  margin-bottom: 0.4rem;
+}
 
 /* ─── MOBILE ──────────────────────────────────────────── */
 
