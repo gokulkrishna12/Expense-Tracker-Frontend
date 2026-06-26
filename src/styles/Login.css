@@ -7,7 +7,7 @@
 }
 
 :root {
-  --glass-bg:     rgba(255, 255, 255, 0.16);
+  --glass-bg: rgba(255, 255, 255, 0.12);
   --glass-border: rgba(255, 255, 255, 0.28);
   --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
   --accent:       #4f8ef7;
@@ -42,8 +42,8 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    rgba(8, 18, 50, 0.09),
-    rgba(8, 18, 50, 0.09)
+  rgba(8, 18, 50, 0.55),
+  rgba(8, 18, 50, 0.55)
   );
   z-index: 0;
 }

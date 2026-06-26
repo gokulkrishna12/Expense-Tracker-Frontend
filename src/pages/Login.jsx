@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 import { loginUser } from "../services/authService";
 import "../styles/Login.css";
 
@@ -68,7 +68,7 @@ function Login() {
                 localStorage.removeItem("rememberEmail");
             }
 
-            toast.success("Welcome Back 🎉");
+            toast.success("Welcome Back");
 
             setTimeout(() => {
                 navigate("/dashboard");
