@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { registerUser } from "../services/authService";
 import "../styles/Register.css";
 
@@ -23,11 +23,8 @@ function Register() {
         const { name, value } = e.target;
 
         setFormData({ ...formData, [name]: value });
-
-        // clear error on change
         setErrors((prev) => ({ ...prev, [name]: "" }));
 
-        // password strength
         if (name === "password") {
             if (value.length === 0) {
                 setStrength("");
@@ -81,49 +78,28 @@ function Register() {
 
         try {
             setLoading(true);
-
             await registerUser(formData);
-
             toast.success("Registration Successful");
-
             navigate("/");
-
         } catch (error) {
-
             const msg = error?.response?.data?.message || "Registration Failed. Try again.";
             toast.error(msg);
-
         } finally {
-
             setLoading(false);
-
         }
     };
 
     return (
-
         <div className="register-container">
 
             <div className="auth-card">
 
                 <div className="text-center mb-4">
-
-                    <h1 className="app-title">
-                        Expense Tracker
-                    </h1>
-
-                    <p className="app-subtitle">
-                        Smart Expense Management
-                    </p>
-
+                    <h1 className="app-title">Expense Tracker</h1>
+                    <p className="app-subtitle">Smart Expense Management</p>
                     <hr />
-
                     <h3>Create Account</h3>
-
-                    <p className="text-muted">
-                        Register to manage your expenses
-                    </p>
-
+                    <p className="text-muted">Register to manage your expenses</p>
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -137,9 +113,7 @@ function Register() {
                         onChange={handleChange}
                     />
                     {errors.name && (
-                        <small className="error-msg mb-2">
-                            {errors.name}
-                        </small>
+                        <small className="error-msg mb-2">{errors.name}</small>
                     )}
 
                     <input
@@ -151,9 +125,7 @@ function Register() {
                         onChange={handleChange}
                     />
                     {errors.email && (
-                        <small className="error-msg mb-2">
-                            {errors.email}
-                        </small>
+                        <small className="error-msg mb-2">{errors.email}</small>
                     )}
 
                     <div className="input-group mb-1 mt-2">
@@ -170,18 +142,12 @@ function Register() {
                             className="btn btn-outline-secondary"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            <i className={
-                                showPassword
-                                ? "bi bi-eye-slash-fill"
-                                : "bi bi-eye-fill"
-                            }></i>
+                            <i className={showPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
                         </button>
                     </div>
 
                     {errors.password && (
-                        <small className="error-msg mb-1">
-                            {errors.password}
-                        </small>
+                        <small className="error-msg mb-1">{errors.password}</small>
                     )}
 
                     {strength && (
@@ -190,47 +156,27 @@ function Register() {
                         </small>
                     )}
 
-                    <button
-                        className="btn btn-primary w-100 mt-2"
-                        disabled={loading}
-                    >
+                    <button className="btn btn-primary w-100 mt-2" disabled={loading}>
                         {loading ? "Creating Account..." : "Register"}
                     </button>
 
                 </form>
 
                 <div className="text-center mt-4">
-
-                    Already have an account?
-
-                    <br />
-
-                    <Link to="/">
-                        Login Here
-                    </Link>
-
+                    Already have an account?<br />
+                    <Link to="/">Login Here</Link>
                 </div>
 
             </div>
 
             <div className="auth-footer">
-
-                <small>
-                    Developed by <strong>Gokul Krishna</strong>
-                </small>
-
+                <small>Developed by <strong>Gokul Krishna</strong></small>
                 <br />
-
-                <small>
-                    © {new Date().getFullYear()} All Rights Reserved
-                </small>
-
+                <small>© {new Date().getFullYear()} All Rights Reserved</small>
             </div>
 
         </div>
-
     );
-
 }
 
 export default Register;
